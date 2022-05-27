@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-05-27 15:52:23
+LastEditTime: 2022-05-27 16:34:41
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -15,7 +15,7 @@ from sklearn.metrics import accuracy_score
 
 numSlices = 3 # Number of Slices
 iterations = 300 # Number of iterations
-eta = 0.01 # iteration step_size
+alpha = 0.01 # iteration step_size
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1)
@@ -25,7 +25,7 @@ def gradient(point: np.ndarray, w: np.ndarray) -> np.ndarray:
     y = point[-1]    # point label
     x = point[:-1]   # point coordinate
     # For each point (x, y), compute gradient function, then sum these up
-    return  - x * (y - logistic_f(x, w))
+    return  - (y - logistic_f(x, w)) * x
 
 if __name__ == "__main__":
 
@@ -51,8 +51,8 @@ if __name__ == "__main__":
 
     for i in range(iterations):
         print("On iteration %i" % (i + 1))
-        grad = points.map(lambda point: gradient(point, w)).reduce(add)
-        w -= eta * grad
+        g = points.map(lambda point: gradient(point, w)).reduce(add)
+        w -= alpha * g
 
         y_pred = logistic_f(np.concatenate([X_test, np.ones((n_test, 1))], axis=1), w)
         pred_label = np.where(y_pred < 0.5, 0, 1)
