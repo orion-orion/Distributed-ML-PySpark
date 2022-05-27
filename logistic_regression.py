@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-05-27 11:27:46
+LastEditTime: 2022-05-27 15:52:23
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -14,8 +14,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 numSlices = 3 # Number of Slices
-iterations = 400 # Number of iterations
-step_size = 0.01 # iteration step
+iterations = 300 # Number of iterations
+eta = 0.01 # iteration step_size
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1)
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     for i in range(iterations):
         print("On iteration %i" % (i + 1))
         grad = points.map(lambda point: gradient(point, w)).reduce(add)
-        w -= step_size * grad / n_train
+        w -= eta * grad
 
         y_pred = logistic_f(np.concatenate([X_test, np.ones((n_test, 1))], axis=1), w)
         pred_label = np.where(y_pred < 0.5, 0, 1)
@@ -65,11 +65,12 @@ if __name__ == "__main__":
     
     spark.stop()
     
-# Final w: [  2.16071074   3.83393988  12.31919527   9.22327535  -0.13195555
-#    0.11412315  -0.62970909  -0.97013437   0.84985948   0.17285233
-#    0.09301001  -0.54307295   0.87885498  -6.1623771    0.37821874
-#    0.81860751   0.43138264  -0.73978801   0.11298207  -0.87324957
-#    2.52234183   4.28098502  12.52925899 -10.31221014   0.89696044
-#   -0.36258326  -0.75073835  -0.98280347   0.39573432  -0.47147882
-#    1.19939714] 
-# Final acc: 0.92982
+# Final w: [ 8.24963374e+02  1.49061653e+03  4.99129841e+03  4.41557347e+03
+#   8.61406180e+00  6.75207334e-01 -6.42839586e+00 -3.56389089e+00
+#   1.62278467e+01  5.52493855e+00  2.35922112e+00  1.10248851e+02
+#  -6.27003990e+00 -2.30316915e+03  1.11515026e+00  1.83001336e-01
+#   6.53404674e-01  8.31347239e-01  2.73936848e+00 -6.85365798e-01
+#   8.33326788e+02  1.91290094e+03  4.96153939e+03 -4.67970066e+03
+#   1.14797829e+01  8.62281501e-01 -1.07984126e+01 -3.03795729e+00
+#   2.28165961e+01  7.60731769e+00  1.03868750e+02] 
+# Final acc: 0.929825
