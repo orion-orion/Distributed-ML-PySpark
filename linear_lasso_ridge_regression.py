@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-05-30 15:01:29
+LastEditTime: 2022-06-15 21:57:40
 '''
 from sklearn.datasets import load_diabetes
 import numpy as np
@@ -12,6 +12,7 @@ from pyspark.sql import SparkSession
 from operator import add
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
+from sklearn.preprocessing import normalize
 
 n_slices = 3  # Number of Slices
 n_iterations = 300  # Number of iterations
@@ -38,6 +39,7 @@ if __name__ == "__main__":
     D = X.shape[1]
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.3, random_state=0)
+
     n_train, n_test = X_train.shape[0], X_test.shape[0]
 
     spark = SparkSession\
@@ -56,12 +58,14 @@ if __name__ == "__main__":
 
     for t in range(n_iterations):
         print("On iteration %d" % (t + 1))
-        g = points.map(lambda point: gradient(point, w)).reduce(add)
+        w_br = spark.sparkContext.broadcast(w)
+        
+        g = points.map(lambda point: gradient(point, w_br.value)).reduce(add)
+
         w -= alpha * g
 
         y_pred = linear_f(np.concatenate(
             [X_test, np.ones((n_test, 1))], axis=1), w)
-
         mse = mean_absolute_error(y_test, y_pred)
         print("iterations: %d, mse: %f" % (t, mse))
 
