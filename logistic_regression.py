@@ -57,6 +57,7 @@ if __name__ == "__main__":
     for t in range(n_iterations):
         print("On iteration %d" % (t + 1))
         w_br = spark.sparkContext.broadcast(w)
+        
         # g = points.map(lambda point: gradient(point, w)).reduce(add)
         # g = points.map(lambda point: gradient(point, w_br.value)).reduce(add)
         g = points.map(lambda point: gradient(point, w_br.value))\

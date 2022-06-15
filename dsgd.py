@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-15 20:53:34
+LastEditTime: 2022-06-15 21:43:04
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     
     for t in range(n_iterations):
-        w_br = spark.sparkContext.broadcast(w)
         print("On iteration %d" % (t + 1))
+        w_br = spark.sparkContext.broadcast(w)
 
         (g, mini_batch_size) = points.sample(False, mini_batch_fraction, 42 + t)\
             .map(lambda point: gradient(point, w_br.value))\
