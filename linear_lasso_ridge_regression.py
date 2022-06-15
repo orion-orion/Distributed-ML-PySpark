@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-15 21:57:40
+LastEditTime: 2022-06-15 21:56:28
 '''
 from sklearn.datasets import load_diabetes
 import numpy as np
