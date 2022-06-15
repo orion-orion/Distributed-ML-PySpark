@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-15 21:00:40
+LastEditTime: 2022-06-15 21:42:02
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -55,8 +55,8 @@ if __name__ == "__main__":
     print("Initial w: " + str(w))
     
     for t in range(n_iterations):
-        w_br = spark.sparkContext.broadcast(w)
         print("On iteration %d" % (t + 1))
+        w_br = spark.sparkContext.broadcast(w)
         # g = points.map(lambda point: gradient(point, w)).reduce(add)
         # g = points.map(lambda point: gradient(point, w_br.value)).reduce(add)
         g = points.map(lambda point: gradient(point, w_br.value))\
