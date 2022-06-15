@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-15 09:43:00
+LastEditTime: 2022-06-15 21:00:40
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -53,14 +53,16 @@ if __name__ == "__main__":
     # Initialize w to a random value
     w = 2 * np.random.ranf(size=D + 1) - 1
     print("Initial w: " + str(w))
-    w_br = spark.sparkContext.broadcast(w)
     
     for t in range(n_iterations):
+        w_br = spark.sparkContext.broadcast(w)
         print("On iteration %d" % (t + 1))
         # g = points.map(lambda point: gradient(point, w)).reduce(add)
-        g = points.map(lambda point: gradient(point, w_br.value)).reduce(add)
+        # g = points.map(lambda point: gradient(point, w_br.value)).reduce(add)
+        g = points.map(lambda point: gradient(point, w_br.value))\
+            .treeAggregate(0.0, add, add)
+
         w -= alpha * g
-        w_br = spark.sparkContext.broadcast(w)
         
         y_pred = logistic_f(np.concatenate(
             [X_test, np.ones((n_test, 1))], axis=1), w)
