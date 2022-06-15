@@ -59,7 +59,7 @@ if __name__ == "__main__":
     for t in range(n_iterations):
         print("On iteration %d" % (t + 1))
         w_br = spark.sparkContext.broadcast(w)
-
+        
         (g, mini_batch_size) = points.sample(False, mini_batch_fraction, 42 + t)\
             .map(lambda point: gradient(point, w_br.value))\
             .treeAggregate(
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                     seqOp=lambda res, g: (res[0] + g, res[1] + 1),\
                         combOp=lambda res_1, res_2: (res_1[0] + res_2[0], res_1[1] + res_2[1])
             )
-        print(g, mini_batch_size)
+
         w -= alpha * g/mini_batch_size
         
         y_pred = logistic_f(np.concatenate(
