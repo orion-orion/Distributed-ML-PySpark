@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-15 21:43:04
+LastEditTime: 2022-06-25 21:50:03
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -15,8 +15,9 @@ from sklearn.metrics import accuracy_score
 
 n_slices = 3  # Number of Slices
 n_iterations = 300  # Number of iterations
-alpha = 10  # iteration step_size, because gradient sum is divided by minibatch size, it shoulder be larger
+eta = 10  # iteration step_size, because gradient sum is divided by minibatch size, it shoulder be larger
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
+lam = 0.01 # coefficient of regular term
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1)
@@ -28,9 +29,22 @@ def gradient(point: np.ndarray, w: np.ndarray):
     y = point[-1]    # point label
     x = point[:-1]   # point coordinate
     # For each point (x, y), compute gradient function, then sum these up
-    # notice thet we need to compute minibatch size, so return(g, 1)
     return - (y - logistic_f(x, w)) * x
 
+
+def reg_gradient(w, reg_type="l2", alpha=0):
+    """ gradient for reg_term
+    """ 
+    assert(reg_type in ["none", "l2", "l1", "elastic_net"])
+    if reg_type == "none":
+        return 0
+    elif reg_type == "l2":
+        return w
+    elif reg_type == "l1":
+        return np.sign(w)
+    else:
+        return alpha * np.sign(w) + (1 - alpha) * w
+    
 
 if __name__ == "__main__":
 
@@ -38,7 +52,7 @@ if __name__ == "__main__":
 
     D = X.shape[1]
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=0)
+        X, y, test_size=0.3, random_state=0, shuffle=True)
     n_train, n_test = X_train.shape[0], X_test.shape[0]
 
     spark = SparkSession\
@@ -68,7 +82,7 @@ if __name__ == "__main__":
                         combOp=lambda res_1, res_2: (res_1[0] + res_2[0], res_1[1] + res_2[1])
             )
 
-        w -= alpha * g/mini_batch_size
+        w -= eta * g/mini_batch_size + lam * reg_gradient(w, "l2")
         
         y_pred = logistic_f(np.concatenate(
             [X_test, np.ones((n_test, 1))], axis=1), w)
@@ -81,12 +95,12 @@ if __name__ == "__main__":
 
     spark.stop()
 
-# Final w: [ 2.47106772e+03  4.53539140e+03  1.49658271e+04  1.49085211e+04
-#   2.49189579e+01  3.86567135e+00 -2.10764497e+01 -9.70220892e+00
-#   4.66690447e+01  1.98304608e+01  5.39929228e-03  3.18391480e+02
-#  -3.33336179e+01 -6.97806573e+03  1.85282484e+00  2.47784246e+00
-#   2.90481836e+00  1.34441817e+00  4.78931649e+00 -4.90105658e-02
-#   2.46075335e+03  5.85553211e+03  1.47565943e+04 -1.50819870e+04
-#   3.35107010e+01  4.44383010e+00 -2.74355495e+01 -5.50744484e+00
-#   6.77728432e+01  2.07616117e+01  3.09770050e+02] 
+# Final w: [ 2.47050494e+03  4.50175117e+03  1.49694229e+04  1.48496465e+04
+#   2.39865542e+01  5.39857896e+00 -2.14847453e+01 -9.38178616e+00
+#   4.71167820e+01  1.98715626e+01  1.20180738e+00  3.26319136e+02
+#  -1.30502268e+01 -6.92270842e+03  2.83258511e+00  1.70759297e+00
+#   2.18407260e+00  1.93251469e+00  6.01895680e+00  2.62176741e-01
+#   2.45764325e+03  5.82117047e+03  1.47596541e+04 -1.50274740e+04
+#   3.33873472e+01  4.36492228e+00 -2.75599841e+01 -6.11206766e+00
+#   6.85433184e+01  2.01329301e+01  3.09835463e+02] 
 # Final acc: 0.912281
