@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-25 21:50:03
+LastEditTime: 2022-06-29 20:20:00
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -12,12 +12,13 @@ from pyspark.sql import SparkSession
 from operator import add
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
-n_slices = 3  # Number of Slices
-n_iterations = 300  # Number of iterations
-eta = 10  # iteration step_size, because gradient sum is divided by minibatch size, it shoulder be larger
+n_slices = 4  # Number of Slices
+n_iterations = 1500  # Number of iterations
+eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-lam = 0.01 # coefficient of regular term
+lam = 0 # coefficient of regular term
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1)
@@ -44,7 +45,26 @@ def reg_gradient(w, reg_type="l2", alpha=0):
         return np.sign(w)
     else:
         return alpha * np.sign(w) + (1 - alpha) * w
-    
+
+
+def draw_acc_plot(accs, n_iterations):
+    def ewma_smooth(accs, alpha=0.9):
+        s_accs = np.zeros(n_iterations)
+        for idx, acc in enumerate(accs):
+            if idx == 0:
+                s_accs[idx] = acc
+            else:
+                s_accs[idx] = alpha * s_accs[idx-1] + (1 - alpha) * acc
+        return s_accs
+
+    s_accs = ewma_smooth(accs, alpha=0.9)
+    plt.plot(np.arange(1, n_iterations + 1), accs, color="C0", alpha=0.3)
+    plt.plot(np.arange(1, n_iterations + 1), s_accs, color="C0")
+    plt.title(label="Accuracy on test dataset")
+    plt.xlabel("Round")
+    plt.ylabel("Accuracy")
+    plt.savefig("dsgd_acc_plot.png")
+
 
 if __name__ == "__main__":
 
@@ -69,7 +89,7 @@ if __name__ == "__main__":
     w = 2 * np.random.ranf(size=D + 1) - 1
     print("Initial w: " + str(w))
 
-    
+    accs = []
     for t in range(n_iterations):
         print("On iteration %d" % (t + 1))
         w_br = spark.sparkContext.broadcast(w)
@@ -88,12 +108,16 @@ if __name__ == "__main__":
             [X_test, np.ones((n_test, 1))], axis=1), w)
         pred_label = np.where(y_pred < 0.5, 0, 1)
         acc = accuracy_score(y_test, pred_label)
+        accs.append(acc)
         print("iterations: %d, accuracy: %f" % (t, acc))
 
     print("Final w: %s " % w)
     print("Final acc: %f" % acc)
 
     spark.stop()
+
+    draw_acc_plot(accs, n_iterations)
+
 
 # Final w: [ 2.47050494e+03  4.50175117e+03  1.49694229e+04  1.48496465e+04
 #   2.39865542e+01  5.39857896e+00 -2.14847453e+01 -9.38178616e+00
