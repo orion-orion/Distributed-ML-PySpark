@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-29 19:58:28
+LastEditTime: 2022-06-29 20:26:51
 '''
 from functools import reduce
 from typing import Tuple
@@ -20,7 +20,7 @@ n_slices = 4  # Number of Slices
 n_iterations = 300  # Number of iterations 300
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-n_local_epochs = 5 # the number local epochs 5
+n_local_iterations = 5 # the number local epochs 5
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1 +1e-6)
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         w_br = spark.sparkContext.broadcast(w)
         ws = ws.mapPartitions(lambda iter: [(iter[0][0], w_br.value)])
                             
-        for epoch in range(n_local_epochs):
+        for local_t in range(n_local_iterations):
             ws = points.sample(False, mini_batch_fraction, 42 + t)\
                 .join(ws, numPartitions=n_slices)\
                     .map(lambda pt_w: gradient(pt_w))\
