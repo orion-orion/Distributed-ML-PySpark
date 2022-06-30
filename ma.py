@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-30 08:54:52
+LastEditTime: 2022-06-30 16:47:02
 '''
 from functools import reduce
 from typing import Tuple
@@ -17,10 +17,10 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 n_slices = 4  # Number of Slices
-n_iterations = 1500  # Number of iterations
+n_iterations = 300  # Number of iterations
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-n_local_iterations = 1 # the number local epochs
+n_local_iterations = 5 # the number local epochs
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1 +1e-6)
@@ -59,7 +59,7 @@ def draw_acc_plot(accs, n_iterations):
     plt.title(label="Accuracy on test dataset")
     plt.xlabel("Round")
     plt.ylabel("Accuracy")
-    plt.savefig("ma_acc_plot.png")
+    plt.savefig("ma_acc_plot2.png")
 
 
 if __name__ == "__main__":
