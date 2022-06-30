@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-29 21:07:15
+LastEditTime: 2022-06-30 17:13:54
 '''
 from functools import reduce
 from typing import Tuple
@@ -17,12 +17,12 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 n_slices = 4  # Number of Slices
-n_iterations = 1500  # Number of iterations
+n_iterations = 300  # Number of iterations
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-n_local_iterations = 1 # the number local epochs
-mu = 0.5
-zeta = 0.5
+n_local_iterations = 5 # the number local epochs
+mu = 0.9
+zeta = 0.1
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1 +1e-6)
@@ -61,7 +61,7 @@ def draw_acc_plot(accs, n_iterations):
     plt.title(label="Accuracy on test dataset")
     plt.xlabel("Round")
     plt.ylabel("Accuracy")
-    plt.savefig("bmuf_acc_plot.png")
+    plt.savefig("bmuf_acc_plot2.png")
 
 
 if __name__ == "__main__":
@@ -128,12 +128,12 @@ if __name__ == "__main__":
     draw_acc_plot(accs, n_iterations)
 
 
-# Final w: [ 3.58817936e+01  5.16085051e+01  2.06738276e+02  1.01696450e+02
-#   4.16141169e-01  5.91462408e-01 -1.29360142e+00 -1.93766314e-01
-#   4.85939825e-01  3.60555394e-01 -4.84201024e-01  4.04012280e+00
-#  -1.91641993e+00 -1.25408757e+02 -1.27251919e+00 -1.11473622e+00
-#  -2.51673394e-01 -5.11414585e-01 -6.31052871e-01  5.44476435e-01
-#   3.65063589e+01  6.46285082e+01  2.09258512e+02 -1.32287680e+02
-#  -4.05273314e-01  4.24595449e-01 -5.97314646e-01 -1.32357538e+00
-#   6.60142707e-01  6.43625602e-01  6.50917716e+00] 
-# Final acc: 0.918129
+# Final w: [ 3.41516794e+01  5.11372499e+01  2.04081002e+02  1.03632914e+02
+#  -7.95309541e+00  6.00459407e+00 -9.58634353e+00 -4.56611790e+00
+#  -3.12493046e+00  7.20375548e+00 -6.13087884e+00  5.02524913e+00
+#  -9.99930137e+00 -1.26079312e+02 -7.53719022e+00 -4.93277200e-01
+#  -9.28534294e+00 -7.81058362e+00  1.78073479e+00 -1.49910377e-01
+#   3.93256717e+01  7.52357494e+01  2.09020272e+02 -1.33107647e+02
+#   8.22423217e+00  7.29714646e+00 -8.21168535e+00 -4.55323584e-02
+#   2.08715673e+00 -9.04949770e+00 -9.35055238e-01] 
+# Final acc: 0.929825
