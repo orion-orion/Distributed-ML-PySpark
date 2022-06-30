@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-29 20:26:51
+LastEditTime: 2022-06-30 08:54:52
 '''
 from functools import reduce
 from typing import Tuple
@@ -17,10 +17,10 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 n_slices = 4  # Number of Slices
-n_iterations = 300  # Number of iterations 300
+n_iterations = 1500  # Number of iterations
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-n_local_iterations = 5 # the number local epochs 5
+n_local_iterations = 1 # the number local epochs
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1 +1e-6)
