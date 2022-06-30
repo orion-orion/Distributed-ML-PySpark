@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-30 11:30:21
+LastEditTime: 2022-06-30 16:22:29
 '''
 from functools import reduce
 from typing import Tuple
@@ -20,8 +20,9 @@ n_slices = 4  # Number of Slices
 n_iterations = 1500  # Number of iterations 300
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
-beta = 0.5 # the parameter of history information
-alpha = 0.1 # constraint coefficient
+rho = 0.1 # penalty constraint coefficient
+alpha = eta * rho # iterative constraint coefficient
+beta = n_slices * alpha # the parameter of history information
 
 def logistic_f(x, w):
     return 1 / (np.exp(-x.dot(w)) + 1 +1e-6)
@@ -60,7 +61,7 @@ def draw_acc_plot(accs, n_iterations):
     plt.title(label="Accuracy on test dataset")
     plt.xlabel("Round")
     plt.ylabel("Accuracy")
-    plt.savefig("easgd_acc_plot.png")
+    plt.savefig("easgd_acc_plot2.png")
 
 
 if __name__ == "__main__":
