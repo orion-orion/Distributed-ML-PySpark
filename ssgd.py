@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-29 20:20:00
+LastEditTime: 2022-07-01 09:49:28
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -63,7 +63,7 @@ def draw_acc_plot(accs, n_iterations):
     plt.title(label="Accuracy on test dataset")
     plt.xlabel("Round")
     plt.ylabel("Accuracy")
-    plt.savefig("dsgd_acc_plot.png")
+    plt.savefig("ssgd_acc_plot.png")
 
 
 if __name__ == "__main__":
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                         combOp=lambda res_1, res_2: (res_1[0] + res_2[0], res_1[1] + res_2[1])
             )
 
-        w -= eta * g/mini_batch_size + lam * reg_gradient(w, "l2")
+        w -= eta * (g/mini_batch_size + lam * reg_gradient(w, "l2"))
         
         y_pred = logistic_f(np.concatenate(
             [X_test, np.ones((n_test, 1))], axis=1), w)
@@ -119,12 +119,12 @@ if __name__ == "__main__":
     draw_acc_plot(accs, n_iterations)
 
 
-# Final w: [ 2.47050494e+03  4.50175117e+03  1.49694229e+04  1.48496465e+04
-#   2.39865542e+01  5.39857896e+00 -2.14847453e+01 -9.38178616e+00
-#   4.71167820e+01  1.98715626e+01  1.20180738e+00  3.26319136e+02
-#  -1.30502268e+01 -6.92270842e+03  2.83258511e+00  1.70759297e+00
-#   2.18407260e+00  1.93251469e+00  6.01895680e+00  2.62176741e-01
-#   2.45764325e+03  5.82117047e+03  1.47596541e+04 -1.50274740e+04
-#   3.33873472e+01  4.36492228e+00 -2.75599841e+01 -6.11206766e+00
-#   6.85433184e+01  2.01329301e+01  3.09835463e+02] 
-# Final acc: 0.912281
+# Final w: [ 3.58216967e+01  4.53599397e+01  2.07040135e+02  8.52414269e+01
+#   4.33038042e-01 -2.93986236e-01  1.43286366e-01 -2.95961229e-01
+#  -7.63362321e-02 -3.93180625e-01  8.19325971e-01  3.30881477e+00
+#  -3.25867503e+00 -1.24769634e+02 -8.52691792e-01 -5.18037887e-01
+#  -1.34380402e-01 -7.49316038e-01 -8.76722455e-01  9.23748261e-01
+#   3.81531205e+01  5.56880612e+01  2.04895002e+02 -1.17586430e+02
+#   8.92355523e-01 -9.40611324e-01 -9.24082612e-01 -1.16210791e+00
+#   7.10117706e-01 -7.62921434e-02  4.48389687e+00] 
+# Final acc: 0.929825
