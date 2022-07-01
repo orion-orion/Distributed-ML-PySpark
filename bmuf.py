@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-30 17:13:54
+LastEditTime: 2022-07-01 16:27:13
 '''
 from functools import reduce
 from typing import Tuple
@@ -61,7 +61,7 @@ def draw_acc_plot(accs, n_iterations):
     plt.title(label="Accuracy on test dataset")
     plt.xlabel("Round")
     plt.ylabel("Accuracy")
-    plt.savefig("bmuf_acc_plot2.png")
+    plt.savefig("bmuf_acc_plot.png")
 
 
 if __name__ == "__main__":
