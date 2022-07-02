@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-06-30 19:32:44
 LastEditors: ZhangHongYu
-LastEditTime: 2022-07-02 11:47:09
+LastEditTime: 2022-07-02 11:51:14
 '''
 import numpy as np
 from pyspark.sql import SparkSession
@@ -36,7 +36,7 @@ def update(i: int, mat: np.ndarray, ratings: np.ndarray) -> np.ndarray:
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .appName("matrix decomposition")\
+        .appName("Matrix Decomposition")\
         .getOrCreate()
 
     R = np.random.rand(m, k) @ (np.random.rand(n, k).T)
