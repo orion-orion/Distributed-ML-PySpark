@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-07-01 16:26:49
+LastEditTime: 2022-07-02 11:50:30
 '''
 from functools import reduce
 from typing import Tuple
@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     spark = SparkSession\
         .builder\
-        .appName("Model Average")\
+        .appName("EASGD")\
         .getOrCreate()
 
     matrix = np.concatenate(
