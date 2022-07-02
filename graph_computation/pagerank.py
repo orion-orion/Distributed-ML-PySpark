@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-31 14:14:35
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-03 19:24:53
+LastEditTime: 2022-07-02 11:48:23
 '''
 import re
 import sys
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # Initialize the spark context.
     spark = SparkSession\
         .builder\
-        .appName("PythonPageRank")\
+        .appName("PageRank")\
         .getOrCreate()
 
     # link: (source_id, dest_id)
