@@ -4,11 +4,11 @@
  * @Author: ZhangHongYu
  * @Date: 2022-07-02 11:00:07
  * @LastEditors: ZhangHongYu
- * @LastEditTime: 2022-07-02 14:28:39
+ * @LastEditTime: 2022-07-02 15:15:19
 -->
 # Distributed Algorithm using PySpark
-[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/orion-orion/TipDMCup21)
-[![](https://img.shields.io/github/license/orion-orion/Distributed-Algorithm-PySpark)](https://github.com/orion-orion/TipDMCup21/LICENSE)
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/orion-orion/Distributed-Algorithm-PySpark)
+[![](https://img.shields.io/github/license/orion-orion/Distributed-Algorithm-PySpark)](https://github.com/orion-orion/Distributed-Algorithm-PySpark/blob/master/LICENSE)
 
 ## 1 Introduction
 Implementations of distributed algorithms using PySpark, including graph computaion, matrix computation, randomized algorithm, optimization and machine learning. In particular, We referenced the meterial presented in [《CME 323: Distributed Algorithms and Optimization》](https://stanford.edu/~rezab/classes/cme323/S17/).
