@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-06-30 21:53:37
 LastEditors: ZhangHongYu
-LastEditTime: 2022-07-01 21:23:25
+LastEditTime: 2022-07-02 11:52:42
 '''
 import random
 from typing import List, Tuple
@@ -43,7 +43,7 @@ def display_clusters(center_to_point: List[Tuple]):
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .appName("KMeans")\
+        .appName("K-means")\
         .getOrCreate()
 
     matrix = np.array([[1, 2], [1, 4], [1, 0],
