@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-06-30 19:32:44
 LastEditors: ZhangHongYu
-LastEditTime: 2022-06-30 21:52:31
+LastEditTime: 2022-07-02 10:38:08
 '''
 import numpy as np
 from pyspark.sql import SparkSession
@@ -36,7 +36,7 @@ def update(i: int, mat: np.ndarray, ratings: np.ndarray) -> np.ndarray:
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .appName("ALS")\
+        .appName("svd")\
         .getOrCreate()
 
     R = np.random.rand(m, k) @ (np.random.rand(n, k).T)
@@ -47,6 +47,7 @@ if __name__ == "__main__":
     U_br = spark.sparkContext.broadcast(U)
     V_br = spark.sparkContext.broadcast(V)
 
+    # we use the alternating least squares (ALS) to solve the SVD problem
     for t in range(n_iterations):
         U_ = spark.sparkContext.parallelize(range(m), n_slices) \
             .map(lambda x: update(x, V_br.value, R_br.value)) \
