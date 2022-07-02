@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-07-01 22:04:00
 LastEditors: ZhangHongYu
-LastEditTime: 2022-07-02 10:16:02
+LastEditTime: 2022-07-02 10:17:32
 '''
 from pyspark.sql import SparkSession
 n_slices = 2  # Number of Slices
@@ -12,7 +12,7 @@ n_slices = 2  # Number of Slices
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
-        .appName("PythonTransitiveClosure")\
+        .appName("TransitiveClosure")\
         .getOrCreate()
      
     paths = spark.sparkContext.parallelize([(1, 2), (1, 3), (2, 3), (3, 1)], n_slices).cache()
