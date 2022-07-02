@@ -4,7 +4,7 @@ Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
-LastEditTime: 2022-07-01 09:49:28
+LastEditTime: 2022-07-02 11:49:57
 '''
 from sklearn.datasets import load_breast_cancer
 import numpy as np
@@ -77,7 +77,7 @@ if __name__ == "__main__":
 
     spark = SparkSession\
         .builder\
-        .appName("SGD")\
+        .appName("SSGD")\
         .getOrCreate()
 
     matrix = np.concatenate(
