@@ -6,7 +6,6 @@ Date: 2022-05-26 21:02:38
 LastEditors: ZhangHongYu
 LastEditTime: 2022-07-02 11:50:30
 '''
-from functools import reduce
 from typing import Tuple
 from sklearn.datasets import load_breast_cancer
 import numpy as np
