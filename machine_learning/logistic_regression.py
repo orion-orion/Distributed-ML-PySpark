@@ -3,7 +3,7 @@ Descripttion:
 Version: 1.0
 Author: ZhangHongYu
 Date: 2022-05-26 21:02:38
-LastEditors: ZhangHongYu
+LastEditors: ZhangHongYu 
 LastEditTime: 2022-07-01 16:22:53
 '''
 from sklearn.datasets import load_breast_cancer
@@ -13,6 +13,10 @@ from operator import add
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 n_slices = 4  # Number of Slices
 n_iterations = 1500  # Number of iterations

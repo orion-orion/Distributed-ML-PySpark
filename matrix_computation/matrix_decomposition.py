@@ -8,6 +8,10 @@ LastEditTime: 2022-07-02 11:51:14
 '''
 import numpy as np
 from pyspark.sql import SparkSession
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 lam = 0.01   # regularization coefficient
 m = 100 # number of users

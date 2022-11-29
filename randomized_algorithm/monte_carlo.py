@@ -9,6 +9,10 @@ LastEditTime: 2022-07-01 21:48:31
 from random import random
 from operator import add
 from pyspark.sql import SparkSession
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 n_slices = 4
 # times of sampling

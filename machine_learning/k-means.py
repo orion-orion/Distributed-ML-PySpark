@@ -11,6 +11,10 @@ from typing import List, Tuple
 import numpy as np
 from pyspark.sql import SparkSession
 import matplotlib.pyplot as plt
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 k = 2
 convergeDist = 0.1

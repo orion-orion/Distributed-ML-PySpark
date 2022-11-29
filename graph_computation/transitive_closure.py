@@ -7,6 +7,11 @@ LastEditors: ZhangHongYu
 LastEditTime: 2022-07-02 11:51:50
 '''
 from pyspark.sql import SparkSession
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
+
 n_slices = 2  # Number of Slices
 
 if __name__ == "__main__":

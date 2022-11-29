@@ -15,6 +15,10 @@ from operator import add
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
+import sys
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 n_slices = 4  # Number of Slices
 n_iterations = 1500  # Number of iterations 300

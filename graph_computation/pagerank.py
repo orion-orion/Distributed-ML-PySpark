@@ -10,9 +10,11 @@ import re
 import sys
 from operator import add
 from typing import Iterable, Tuple
-
 from pyspark.resultiterable import ResultIterable
 from pyspark.sql import SparkSession
+import os
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
 
 n_slices = 3  # Number of Slices
 n_iterations = 10  # Number of iterations
