@@ -18,7 +18,7 @@ os.environ['PYSPARK_PYTHON'] = sys.executable
 
 k = 2
 convergeDist = 0.1
-n_slices = 2
+n_threads = 4  # Number of local threads
 n_iterations = 5
 
 def closest_center(p: np.ndarray, centers: List[np.ndarray]) -> int:
@@ -48,11 +48,12 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("K-means")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
     matrix = np.array([[1, 2], [1, 4], [1, 0],
                   [10, 2], [10, 4], [10, 0]])
-    points = spark.sparkContext.parallelize(matrix, n_slices).cache()
+    points = spark.sparkContext.parallelize(matrix).cache()
 
     k_centers = points.takeSample(False, k, 42)
 

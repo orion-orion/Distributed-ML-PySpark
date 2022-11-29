@@ -14,9 +14,9 @@ import os
 
 os.environ['PYSPARK_PYTHON'] = sys.executable
 
-n_slices = 4
+n_threads = 4  # Number of local threads
 # times of sampling
-n = 100000 * n_slices
+n = 100000 * n_threads
     
 def is_accept(_: int) -> int:
     x = random() * 2 - 1
@@ -27,9 +27,10 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("monte_carlo")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
-    count = spark.sparkContext.parallelize(range(n), n_slices).map(is_accept).reduce(add)
+    count = spark.sparkContext.parallelize(range(n)).map(is_accept).reduce(add)
 
     # equation for the ratio of the area of a circle to a square： count/n = pi/4.
     print("Pi is roughly %f" % (4.0 * count / n))

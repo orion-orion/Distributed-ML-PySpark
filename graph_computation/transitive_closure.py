@@ -12,15 +12,16 @@ import os
 
 os.environ['PYSPARK_PYTHON'] = sys.executable
 
-n_slices = 2  # Number of Slices
+n_threads = 4  # Number of local threads
 
 if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("Transitive Closure")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
      
-    paths = spark.sparkContext.parallelize([(1, 2), (1, 3), (2, 3), (3, 1)], n_slices).cache()
+    paths = spark.sparkContext.parallelize([(1, 2), (1, 3), (2, 3), (3, 1)]).cache()
 
     # Linear transitive closure: each round grows paths by one edge,
     # by joining the the already-discovered paths with graph's edges. 

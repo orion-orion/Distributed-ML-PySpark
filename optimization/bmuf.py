@@ -20,7 +20,7 @@ import os
 
 os.environ['PYSPARK_PYTHON'] = sys.executable
 
-n_slices = 4  # Number of Slices
+n_threads = 4  # Number of local threads
 n_iterations = 300  # Number of iterations
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
@@ -81,15 +81,16 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("BMUF")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
     matrix = np.concatenate(
         [X_train, np.ones((n_train, 1)), y_train.reshape(-1, 1)], axis=1)
 
-    points = spark.sparkContext.parallelize(matrix, n_slices).cache()
+    points = spark.sparkContext.parallelize(matrix).cache()
     points = points.mapPartitionsWithIndex(lambda idx, iter: [ (idx, arr) for arr in iter])
 
-    ws = spark.sparkContext.parallelize(2 * np.random.ranf(size=(n_slices, D + 1)) - 1, n_slices).cache()
+    ws = spark.sparkContext.parallelize(2 * np.random.ranf(size=(n_threads, D + 1)) - 1).cache()
     ws = ws.mapPartitionsWithIndex(lambda idx, iter: [(idx, next(iter))])
 
     w = 2 * np.random.ranf(size=D + 1) - 1
@@ -106,13 +107,13 @@ if __name__ == "__main__":
                             
         for local_t in range(n_local_iterations):
             ws = points.sample(False, mini_batch_fraction, 42 + t)\
-                .join(ws, numPartitions=n_slices)\
+                .join(ws, numPartitions=n_threads)\
                     .map(lambda pt_w: gradient(pt_w))\
                         .mapPartitions(update_local_w) 
             
         par_w_sum = ws.mapPartitions(lambda iter: [iter[0][1]]).treeAggregate(0.0, add, add)           
   
-        w_avg  = par_w_sum / n_slices 
+        w_avg  = par_w_sum / n_threads
 
         delta_w = mu * delta_w + zeta * (w_avg - w)
         w = w + delta_w

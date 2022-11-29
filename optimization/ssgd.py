@@ -18,7 +18,7 @@ import os
 
 os.environ['PYSPARK_PYTHON'] = sys.executable
 
-n_slices = 4  # Number of Slices
+n_threads = 4  # Number of local threads
 n_iterations = 1500  # Number of iterations
 eta = 0.1
 mini_batch_fraction = 0.1 # the fraction of mini batch sample 
@@ -82,12 +82,13 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("SSGD")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
     matrix = np.concatenate(
         [X_train, np.ones((n_train, 1)), y_train.reshape(-1, 1)], axis=1)
 
-    points = spark.sparkContext.parallelize(matrix, n_slices).cache()
+    points = spark.sparkContext.parallelize(matrix).cache()
 
     # Initialize w to a random value
     w = 2 * np.random.ranf(size=D + 1) - 1

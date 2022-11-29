@@ -16,7 +16,7 @@ import os
 
 os.environ['PYSPARK_PYTHON'] = sys.executable
 
-n_slices = 3  # Number of Slices
+n_threads = 4  # Number of local threads
 n_iterations = 10  # Number of iterations
 q = 0.15 #the default value of q is 0.15
 
@@ -31,12 +31,12 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("PageRank")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
     # link: (source_id, dest_id)
     links = spark.sparkContext.parallelize(
         [(1, 2), (1, 3), (2, 3), (3, 1)],
-        n_slices
     )                       
 
     # drop duplicate links and convert links to an adjacency list.

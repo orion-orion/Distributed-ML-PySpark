@@ -18,7 +18,7 @@ m = 100 # number of users
 n = 500 # number of items
 k = 10 # dim of the latent vectors of users and items
 n_iterations = 5 # number of iterations
-n_slices = 4 # number of slices
+n_threads = 4  # Number of local threads
 
 def rmse(R: np.ndarray, U: np.ndarray, V: np.ndarray) -> np.float64:
     diff = R - U @ V.T
@@ -41,6 +41,7 @@ if __name__ == "__main__":
     spark = SparkSession\
         .builder\
         .appName("Matrix Decomposition")\
+        .master("local[%d]" % n_threads)\
         .getOrCreate()
 
     R = np.random.rand(m, k) @ (np.random.rand(n, k).T)
@@ -53,7 +54,7 @@ if __name__ == "__main__":
 
     # we use the alternating least squares (ALS) to solve the SVD problem
     for t in range(n_iterations):
-        U_ = spark.sparkContext.parallelize(range(m), n_slices) \
+        U_ = spark.sparkContext.parallelize(range(m)) \
             .map(lambda x: update(x, V_br.value, R_br.value)) \
             .collect()
 
@@ -61,7 +62,7 @@ if __name__ == "__main__":
         U = np.array(U_)
         U_br = spark.sparkContext.broadcast(U)
 
-        V_ = spark.sparkContext.parallelize(range(n), n_slices) \
+        V_ = spark.sparkContext.parallelize(range(n)) \
             .map(lambda x: update(x, U_br.value, R_br.value.T)) \
             .collect()
         V = np.array(V_)
