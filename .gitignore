@@ -9,8 +9,8 @@ __pycache__/
 # Debug logs
 *.txt
 
-# # Plot results
-# *.png
+# Plot results
+*.png
 
 # VSCode
 .vscode/
