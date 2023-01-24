@@ -7,7 +7,7 @@
  * @LastEditTime: 2022-07-02 15:15:19
 -->
 <p align="center">
-<img src="pic/DistributedML-cover.png" width="300" height="400">
+<img src="pic/DistributedML-cover.jpeg" width="300" height="400">
 </p>
 
 <div align="center">
