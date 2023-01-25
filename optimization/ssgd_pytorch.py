@@ -109,7 +109,7 @@ def train_epoch(epoch, rank, local_model, device, dataset, synchronizer, dataloa
                 pid, epoch + 1, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
             
-    # synchronizer.wait()
+    synchronizer.wait()
     
     
 def test(epoch, model, device, dataset, dataloader_kwargs):
