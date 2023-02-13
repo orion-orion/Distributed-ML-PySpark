@@ -175,7 +175,7 @@ def run_ps(trainers):
     transforms.ToTensor(),
     transforms.Normalize((0.1307,), (0.3081,))
     ])
-    train_dataset = datasets.MNIST('./data', train=True, download=True,
+    train_dataset = datasets.MNIST('../data', train=True, download=True,
                        transform=transform)
     local_train_datasets = dataset_split(train_dataset, n_workers)    
     
