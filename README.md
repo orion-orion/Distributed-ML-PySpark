@@ -22,7 +22,7 @@
 
 
 ## 1 简介
-本项目为经典分布式机器学习算法的的PySpark/Pytorch实现, 主要参考了刘铁岩的《分布式机器学习》和[《CME 323: Distributed Algorithms and Optimization》](https://stanford.edu/~rezab/classes/cme323/S17/)课程。主要内容包括分布式实现的图计算、矩阵计算、随机算法、数值优化和机器学习算法。
+本项目为经典分布式机器学习算法的的PySpark/Pytorch实现, 主要参考了刘铁岩的《分布式机器学习》和[CME 323: Distributed Algorithms and Optimization](https://stanford.edu/~rezab/classes/cme323/S17/)课程。主要内容包括图/矩阵计算（graph/matrix computation）、随机算法、优化（optimization）和机器学习。
 
 ## 2 目录
 
