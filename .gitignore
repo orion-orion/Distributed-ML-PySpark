@@ -6,9 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-# Debug logs
-*.txt
-
 # Plot results
 *.png
 
