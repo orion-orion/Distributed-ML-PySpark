@@ -20,11 +20,26 @@
 [![](https://img.shields.io/github/directory-file-count/orion-orion/Distributed-ML-PySpark)](https://github.com/orion-orion/Distributed-ML-PySpark) [![](https://img.shields.io/github/languages/code-size/orion-orion/Distributed-ML-PySpark)](https://github.com/orion-orion/Distributed-ML-PySpark) 
 </div>
 
-
 ## 1 简介
 本项目为经典分布式机器学习算法的的PySpark/Pytorch实现, 主要参考了刘铁岩的《分布式机器学习》和[CME 323: Distributed Algorithms and Optimization](https://stanford.edu/~rezab/classes/cme323/S17/)课程。主要内容包括图/矩阵计算（graph/matrix computation）、随机算法、优化（optimization）和机器学习。
 
-## 2 目录
+## 2 环境依赖
+
+运行以下命令安装环境依赖：
+```
+pip install -r requirements.txt
+```
+
+注意我的Python版本是3.8.13，Java版本11.0.15。注意PySpark是运行与Java虚拟机上的，且只支持Java 8/11，请勿使用更高级的版本。这里我使用的是Java 11。运行`java -version`可查看本机Java版本。
+```shell
+(base) ➜  ~ java -version 
+java version "11.0.15" 2022-04-19 LTS
+Java(TM) SE Runtime Environment 18.9 (build 11.0.15+8-LTS-149)
+Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.15+8-LTS-149, mixed mode)
+```
+最后，Pytorch的`torch.distributed.rpc`模块只支持Linux操作系统，故务必保证您在Linux操作系统上运行相关代码，否则会报错（参见[GitHub issues: torch.distributed.rpc](https://github.com/iffiX/machin/issues/17)）。
+
+## 3 目录
 
 - 图计算
     - PageRank  [[explanation]](https://www.cnblogs.com/orion-orion/p/16340839.html)
